@@ -22,6 +22,7 @@ const Beer = ({ beer, toggleLike, liked, toggleInterested, interested }) => (
         display: grid;
         grid-template-columns: 15px 1fr 260px 275px 100px 42px 15px;
         border-bottom: 1px solid #afafaf;
+        page-break-inside: avoid;
       }
       .beer > div {
         display: flex;
