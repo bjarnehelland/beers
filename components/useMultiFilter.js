@@ -11,11 +11,11 @@ const useMultiFilter = items => {
       newSelected.push(item)
     }
 
-    if (newSelected.length === 0) {
-      setSelected(items)
-    } else {
-      setSelected(newSelected)
-    }
+    // if (newSelected.length === 0) {
+    //   setSelected(items)
+    // } else {
+    setSelected(newSelected)
+    // }
   }
   return [
     selected,
