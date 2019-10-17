@@ -1,6 +1,6 @@
-import React from "react";
-import Like from "./like";
-import Interested from "./interested";
+import React from 'react'
+import Like from './like'
+import Interested from './interested'
 
 const Beer = ({ beer, toggleLike, liked, toggleInterested, interested }) => (
   <div className="beer">
@@ -20,7 +20,7 @@ const Beer = ({ beer, toggleLike, liked, toggleInterested, interested }) => (
     <style jsx>{`
       .beer {
         display: grid;
-        grid-template-columns: 15px 1fr 260px 275px 100px 42px 15px;
+        grid-template-columns: 15px 1fr 260px 290px 100px 42px 15px;
         border-bottom: 1px solid #afafaf;
         page-break-inside: avoid;
       }
@@ -66,6 +66,6 @@ const Beer = ({ beer, toggleLike, liked, toggleInterested, interested }) => (
       }
     `}</style>
   </div>
-);
+)
 
-export default Beer;
+export default Beer
