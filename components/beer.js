@@ -12,6 +12,7 @@ const Beer = ({ beer, toggleLike, liked, toggleInterested, interested }) => (
     </div>
     <div className="style">{beer.style}</div>
     <div className="brewery">{beer.breweryName}</div>
+    <div className="country">{beer.country}</div>
     <div className="room">{beer.room}</div>
     <div className="rating">{beer.untappdRating}</div>
     <div className="interested" onClick={toggleInterested}>
@@ -20,7 +21,7 @@ const Beer = ({ beer, toggleLike, liked, toggleInterested, interested }) => (
     <style jsx>{`
       .beer {
         display: grid;
-        grid-template-columns: 15px 1fr 260px 290px 100px 42px 15px;
+        grid-template-columns: 15px 1fr 202px 185px 100px 100px 42px 15px;
         border-bottom: 1px solid #afafaf;
         page-break-inside: avoid;
       }
@@ -60,7 +61,8 @@ const Beer = ({ beer, toggleLike, liked, toggleInterested, interested }) => (
           align-items: flex-start;
         }
 
-        .beer > div.rating {
+        .beer > div.rating,
+        .beer > div.country {
           display: none;
         }
       }

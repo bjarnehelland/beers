@@ -3,13 +3,16 @@ import Head from 'next/head'
 import fetch from 'isomorphic-unfetch'
 import { firstBy } from 'thenby'
 import Beer from '../components/beer'
-import useFilter from '../components/useFilter'
 import useMultiFilter from '../components/useMultiFilter'
 import useInteractions from './../components/useInteractions'
 
 const Index = props => {
-  const [session, FilterSession] = useFilter(props.sessions)
-  const [styles, FilterStyles] = useMultiFilter(props.styles)
+  const [beers, Filters] = useMultiFilter(props.beers, [
+    { prop: 'session' },
+    { prop: 'filterStyle' },
+    { prop: 'room' },
+  ])
+
   const {
     likes,
     interested,
@@ -24,51 +27,54 @@ const Index = props => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>
-        <FilterSession title="Økt" />
-        <FilterStyles title="Stil" />
-      </div>
+      <Filters />
 
       <div>
-        {props.beers
-          .filter(b => b.session === session)
-          .filter(b => styles.includes(b.filterStyle))
-          .map(beer => (
-            <Beer
-              key={beer.name}
-              beer={beer}
-              liked={!!likes[beer.name]}
-              interested={!!interested[beer.name]}
-              toggleLike={() => handleToggleLike(beer.name)}
-              toggleInterested={() => handleToggleInterested(beer.name)}
-            />
-          ))}
+        {beers.map((beer, i) => (
+          <Beer
+            key={beer.name + beer.session}
+            beer={beer}
+            liked={!!likes[beer.name]}
+            interested={!!interested[beer.name]}
+            toggleLike={() => handleToggleLike(beer.name)}
+            toggleInterested={() => handleToggleInterested(beer.name)}
+          />
+        ))}
       </div>
+      <style jsx global>{`
+        html {
+          box-sizing: border-box;
+        }
+        *,
+        *:before,
+        *:after {
+          box-sizing: inherit;
+        }
+
+        :root {
+          --filter-color: #000;
+          --filter-check-color: var(--filter-color);
+          --filter-check-background: #78b18f;
+        }
+      `}</style>
     </div>
   )
 }
 
-Index.getInitialProps = async () => {
-  const sessions = [
-    'Fredag (14-18)',
-    'Fredag (18-22)',
-    'Lørdag (14-18)',
-    'Lørdag (18-22)',
-  ]
-
-  function getSession(untappdSectionId) {
-    switch (untappdSectionId) {
-      case '440439':
-        return sessions[0]
-      case '440440':
-        return sessions[1]
-      case '440449':
-        return sessions[2]
-      case '440450':
-        return sessions[3]
-    }
+function getSession(untappdSectionId) {
+  switch (untappdSectionId) {
+    case '440439':
+      return 'Fredag (14-18)'
+    case '440440':
+      return 'Fredag (18-22)'
+    case '440449':
+      return 'Lørdag (14-18)'
+    case '440450':
+      return 'Lørdag (18-22)'
   }
+}
 
+Index.getInitialProps = async () => {
   const res = await fetch(
     'https://www.whatsbrewing.no/wp-content/themes/wb2019/untappd/http/beers.json',
   )
@@ -82,9 +88,7 @@ Index.getInitialProps = async () => {
 
   beers.sort(firstBy('room').thenBy('breweryName'))
 
-  const styles = [...new Set(beers.map(b => b.filterStyle))]
-
-  return { beers, styles, sessions }
+  return { beers }
 }
 
 export default Index
