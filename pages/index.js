@@ -51,6 +51,11 @@ const Index = props => {
           box-sizing: inherit;
         }
 
+        body {
+          padding: 0;
+          margin: 0;
+        }
+
         :root {
           --filter-color: #000;
           --filter-check-color: var(--filter-color);

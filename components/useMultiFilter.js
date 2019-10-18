@@ -74,6 +74,7 @@ const useMultiFilter = (items, filterProps) => {
             position: sticky;
             top: 0;
             background: white;
+            padding: 5px;
           }
         `}</style>
       </div>
