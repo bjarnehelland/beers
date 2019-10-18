@@ -7,13 +7,19 @@ const Beer = ({ beer, toggleLike, liked, toggleInterested, interested }) => (
     <div className="like" onClick={toggleLike}>
       <Like liked={liked} />
     </div>
-    <div className="name" title={beer.description}>
+    <div className="name" title={beer.description} onClick={toggleLike}>
       {beer.name} ({beer.abv}%)
     </div>
-    <div className="style">{beer.style}</div>
-    <div className="brewery">{beer.breweryName}</div>
+    <div className="style" onClick={toggleLike}>
+      {beer.style}
+    </div>
+    <div className="brewery" onClick={toggleInterested}>
+      {beer.breweryName}
+    </div>
     <div className="country">{beer.country}</div>
-    <div className="room">{beer.room}</div>
+    <div className="room" onClick={toggleInterested}>
+      {beer.room}
+    </div>
     <div className="rating">{beer.untappdRating}</div>
     <div className="interested" onClick={toggleInterested}>
       <Interested interested={interested} />
@@ -23,6 +29,7 @@ const Beer = ({ beer, toggleLike, liked, toggleInterested, interested }) => (
         display: grid;
         grid-template-columns: 15px 1fr 202px 185px 100px 100px 42px 15px;
         border-bottom: 1px solid #afafaf;
+        padding: 0 10px;
         page-break-inside: avoid;
       }
       .beer > div {
@@ -54,8 +61,12 @@ const Beer = ({ beer, toggleLike, liked, toggleInterested, interested }) => (
           grid-row-end: 3;
           grid-column: 4;
         }
+        .beer > div.brewery {
+          grid-column: 3;
+          grid-row: 1;
+          align-items: flex-start;
+        }
 
-        .beer > div.style,
         .beer > div.room {
           justify-content: flex-end;
           align-items: flex-start;

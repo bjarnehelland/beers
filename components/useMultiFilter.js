@@ -62,11 +62,13 @@ const useMultiFilter = (items, filterProps) => {
       <div className="filters">
         {filterProps.map(filterProp => (
           <div key={filterProp.prop}>
-            {filterProp.prop}:
-            <Filter
-              items={filterState[filterProp.prop]}
-              onChange={item => handleChange(item, filterProp.prop)}
-            />
+            <div>{filterProp.title || filterProp.prop}</div>
+            <div className="filter">
+              <Filter
+                items={filterState[filterProp.prop]}
+                onChange={item => handleChange(item, filterProp.prop)}
+              />
+            </div>
           </div>
         ))}
         <style jsx>{`
@@ -75,6 +77,11 @@ const useMultiFilter = (items, filterProps) => {
             top: 0;
             background: white;
             padding: 5px;
+          }
+
+          .filter {
+            white-space: nowrap;
+            overflow: auto;
           }
         `}</style>
       </div>

@@ -8,9 +8,9 @@ import useInteractions from './../components/useInteractions'
 
 const Index = props => {
   const [beers, Filters] = useMultiFilter(props.beers, [
-    { prop: 'session' },
-    { prop: 'filterStyle' },
-    { prop: 'room' },
+    { prop: 'session', title: 'Time' },
+    { prop: 'filterStyle', title: 'Style' },
+    { prop: 'room', title: 'Room' },
   ])
 
   const {
