@@ -65,6 +65,8 @@ const Beer = ({ beer, toggleLike, liked, toggleInterested, interested }) => (
           grid-column: 3;
           grid-row: 1;
           align-items: flex-start;
+          max-width: 180px;
+          text-align: end;
         }
 
         .beer > div.room {

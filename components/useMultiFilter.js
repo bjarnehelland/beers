@@ -1,4 +1,5 @@
 import React from 'react'
+import { firstBy } from 'thenby'
 
 function reducer(state, action) {
   switch (action.type) {
@@ -10,6 +11,7 @@ function reducer(state, action) {
           name: i,
           selected: false,
         }))
+        filterItems.sort(firstBy('name'))
         filters[filterProp.prop] = filterItems
         return filters
       }, {})
