@@ -1,36 +1,30 @@
 import React from 'react'
 import { firstBy } from 'thenby'
+import produce from 'immer'
 
 function reducer(state, action) {
-  switch (action.type) {
-    case 'load':
-      return action.filterProps.reduce((filters, filterProp) => {
-        const filterItems = [
-          ...new Set(action.items.map(i => i[filterProp.prop])),
-        ].map(i => ({
-          name: i,
-          selected: false,
-        }))
-        filterItems.sort(firstBy('name'))
-        filters[filterProp.prop] = filterItems
-        return filters
-      }, {})
-    case 'toggle':
-      return {
-        ...state,
-        [action.prop]: state[action.prop].map(i => {
-          if (i.name === action.item) {
-            return {
-              ...i,
-              selected: !i.selected,
-            }
-          }
-          return i
-        }),
-      }
-    default:
-      throw new Error()
-  }
+  return produce(state, draft => {
+    switch (action.type) {
+      case 'load':
+        action.filterProps.forEach(filterProp => {
+          const filterItems = [
+            ...new Set(action.items.map(i => i[filterProp.prop])),
+          ].map(i => ({
+            name: i,
+            selected: false,
+          }))
+          filterItems.sort(firstBy('name'))
+          draft[filterProp.prop] = filterItems
+        })
+        break
+      case 'toggle':
+        const item = draft[action.prop].find(i => i.name === action.item)
+        item.selected = !item.selected
+        break
+      default:
+        return draft
+    }
+  })
 }
 
 const useMultiFilter = (items, filterProps) => {
