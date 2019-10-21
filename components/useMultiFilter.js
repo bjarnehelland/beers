@@ -139,6 +139,10 @@ const Filter = React.memo(({ items = [], onChange }) => {
           border-radius: 8px;
         }
 
+        .checkbox input:focus ~ .overlay {
+          box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
         .checkbox input:checked ~ .overlay .icon {
           display: block;
         }
