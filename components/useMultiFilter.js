@@ -28,23 +28,19 @@ function reducer(state, action) {
 }
 
 const useMultiFilter = (items, filterProps) => {
-  const [filterState, dispatch] = React.useReducer(reducer, {})
-  React.useLayoutEffect(() => {
+  const [state, dispatch] = React.useReducer(reducer, {})
+  React.useEffect(() => {
     dispatch({ type: 'load', items, filterProps })
   }, [])
-
-  function handleChange(item, prop) {
-    dispatch({ type: 'toggle', item, prop })
-  }
 
   let result = [...items]
   filterProps.forEach(filterProp => {
     if (
-      filterState[filterProp.prop] &&
-      filterState[filterProp.prop].some(p => p.selected)
+      state[filterProp.prop] &&
+      state[filterProp.prop].some(p => p.selected)
     ) {
       result = result.filter(i => {
-        const item = filterState[filterProp.prop].find(
+        const item = state[filterProp.prop].find(
           p => p.name === i[filterProp.prop],
         )
         return item.selected === null ? true : item.selected
@@ -54,38 +50,50 @@ const useMultiFilter = (items, filterProps) => {
 
   return [
     result,
-    () => (
-      <div className="filters">
-        {filterProps.map(filterProp => (
-          <div key={filterProp.prop}>
-            <div>{filterProp.title || filterProp.prop}</div>
-            <div className="filter">
-              <Filter
-                items={filterState[filterProp.prop]}
-                onChange={item => handleChange(item, filterProp.prop)}
-              />
-            </div>
-          </div>
-        ))}
-        <style jsx>{`
-          .filters {
-            position: sticky;
-            top: 0;
-            background: white;
-            padding: 5px;
-          }
-
-          .filter {
-            white-space: nowrap;
-            overflow: auto;
-          }
-        `}</style>
-      </div>
-    ),
+    () =>
+      FilterList({
+        state: state,
+        props: filterProps,
+        dispatch: dispatch,
+      }),
   ]
 }
 
-const Filter = ({ items = [], onChange }) => {
+const FilterList = ({ state, props = [], dispatch }) => {
+  function handleChange(item, prop) {
+    dispatch({ type: 'toggle', item, prop })
+  }
+  return (
+    <div className="filters">
+      {props.map(filterProp => (
+        <div key={filterProp.prop}>
+          <div>{filterProp.title || filterProp.prop}</div>
+          <div className="filter">
+            <Filter
+              items={state[filterProp.prop]}
+              onChange={item => handleChange(item, filterProp.prop)}
+            />
+          </div>
+        </div>
+      ))}
+      <style jsx>{`
+        .filters {
+          position: sticky;
+          top: 0;
+          background: white;
+          padding: 5px;
+        }
+
+        .filter {
+          white-space: nowrap;
+          overflow: auto;
+        }
+      `}</style>
+    </div>
+  )
+}
+
+const Filter = React.memo(({ items = [], onChange }) => {
   return items.map(item => (
     <label className="checkbox" key={item.name}>
       <input
@@ -103,12 +111,12 @@ const Filter = ({ items = [], onChange }) => {
           position: relative;
           margin: 5px;
         }
-        .checkbox input {
-          position: absolute;
-          opacity: 0;
-          width: 0;
-          height: 0;
-        }
+        // .checkbox input {
+        //   position: absolute;
+        //   opacity: 0;
+        //   width: 0;
+        //   height: 0;
+        // }
 
         .checkbox .overlay {
           display: inline-block;
@@ -137,6 +145,6 @@ const Filter = ({ items = [], onChange }) => {
       `}</style>
     </label>
   ))
-}
+})
 
 export default useMultiFilter
