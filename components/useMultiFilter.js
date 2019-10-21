@@ -111,12 +111,12 @@ const Filter = React.memo(({ items = [], onChange }) => {
           position: relative;
           margin: 5px;
         }
-        // .checkbox input {
-        //   position: absolute;
-        //   opacity: 0;
-        //   width: 0;
-        //   height: 0;
-        // }
+        .checkbox input {
+          position: absolute;
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
 
         .checkbox .overlay {
           display: inline-block;

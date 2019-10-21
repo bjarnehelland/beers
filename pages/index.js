@@ -27,7 +27,7 @@ const Index = props => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Filters />
+      {Filters()}
 
       <div>
         {beers.map((beer, i) => (
